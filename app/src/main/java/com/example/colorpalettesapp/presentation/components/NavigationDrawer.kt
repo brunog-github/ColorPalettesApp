@@ -90,10 +90,7 @@ fun DrawerBody(
                             navController.popBackStack()
                             navController.navigate(Screen.Login.route)
                         },
-                        onFailed = {
-                            Log.d("Logout", it)
-                            logoutFailed()
-                        }
+                        onFailed = logoutFailed
                     )
                 }
                 scope.launch {

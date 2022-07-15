@@ -10,9 +10,11 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.graphics.Color
 import com.backendless.Backendless
 import com.backendless.async.callback.AsyncCallback
 import com.backendless.exceptions.BackendlessFault
+import com.example.colorpalettesapp.domain.model.ColorPalette
 import com.example.colorpalettesapp.util.Constants.CLIENT_ID
 import com.example.colorpalettesapp.util.Constants.CLIENT_SECRET
 import com.example.colorpalettesapp.util.Constants.REDIRECT_URI
@@ -91,17 +93,30 @@ fun signIn(
     launcher.launch(client.signInIntent)
 }
 
-fun logout(onSuccess: () -> Unit, onFailed:(String) -> Unit) {
+fun logout(onSuccess: () -> Unit, onFailed:() -> Unit) {
     Backendless.UserService.logout(
         object : AsyncCallback<Void> {
             override fun handleResponse(response: Void?) {
+                Log.d("Logout", "Success")
                 onSuccess()
             }
 
             override fun handleFault(fault: BackendlessFault?) {
-                onFailed(fault?.message.toString())
+                Log.d("Logout", fault?.message.toString())
+                onFailed()
             }
-
         }
     )
+}
+
+fun extractColors(colorPalette: ColorPalette?): List<String> {
+    val colors = mutableListOf<String>()
+    colorPalette?.colors?.split(",")?.forEach {
+        colors.add(it.trim())
+    }
+    return colors
+}
+
+fun hexToColor(colorHex: String): Color {
+    return Color(("FF" + colorHex.removePrefix("#")).toLong(16))
 }

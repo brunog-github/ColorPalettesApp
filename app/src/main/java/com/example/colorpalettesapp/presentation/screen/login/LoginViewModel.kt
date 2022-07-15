@@ -9,7 +9,7 @@ import java.lang.Exception
 
 class LoginViewModel: ViewModel() {
 
-    var signedInState by mutableStateOf(true)
+    var signedInState by mutableStateOf(false)
         private set
 
     var messageBarState by mutableStateOf(MessageBarState())

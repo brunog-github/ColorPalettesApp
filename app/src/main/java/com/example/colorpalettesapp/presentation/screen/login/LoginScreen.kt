@@ -12,6 +12,7 @@ import com.backendless.Backendless
 import com.backendless.BackendlessUser
 import com.backendless.async.callback.AsyncCallback
 import com.backendless.exceptions.BackendlessFault
+import com.example.colorpalettesapp.navigation.Screen
 import com.example.colorpalettesapp.presentation.screen.StartActivityForResult
 import com.example.colorpalettesapp.presentation.screen.logout
 import com.example.colorpalettesapp.presentation.screen.signIn
@@ -54,13 +55,14 @@ fun LoginScreen(
                 ),
                 object : AsyncCallback<BackendlessUser> {
                     override fun handleResponse(response: BackendlessUser?) {
-                        Log.d("LoginScreen", "$response")
+                        navController.popBackStack()
+                        navController.navigate(Screen.Home.route)
                     }
 
                     override fun handleFault(fault: BackendlessFault?) {
                         logout(
-                            onSuccess = { Log.d("Logout", "Success!") },
-                            onFailed = { Log.d("Logout", it) }
+                            onSuccess = { },
+                            onFailed = { }
                         )
                     }
                 },
