@@ -10,6 +10,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
+import com.backendless.Backendless
+import com.backendless.async.callback.AsyncCallback
+import com.backendless.exceptions.BackendlessFault
 import com.example.colorpalettesapp.util.Constants.CLIENT_ID
 import com.example.colorpalettesapp.util.Constants.CLIENT_SECRET
 import com.example.colorpalettesapp.util.Constants.REDIRECT_URI
@@ -86,4 +89,19 @@ fun signIn(
         .build()
     val client = GoogleSignIn.getClient(activity, gso)
     launcher.launch(client.signInIntent)
+}
+
+fun logout(onSuccess: () -> Unit, onFailed:(String) -> Unit) {
+    Backendless.UserService.logout(
+        object : AsyncCallback<Void> {
+            override fun handleResponse(response: Void?) {
+                onSuccess()
+            }
+
+            override fun handleFault(fault: BackendlessFault?) {
+                onFailed(fault?.message.toString())
+            }
+
+        }
+    )
 }

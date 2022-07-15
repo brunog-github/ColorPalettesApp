@@ -13,6 +13,7 @@ import com.backendless.BackendlessUser
 import com.backendless.async.callback.AsyncCallback
 import com.backendless.exceptions.BackendlessFault
 import com.example.colorpalettesapp.presentation.screen.StartActivityForResult
+import com.example.colorpalettesapp.presentation.screen.logout
 import com.example.colorpalettesapp.presentation.screen.signIn
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -34,7 +35,7 @@ fun LoginScreen(
             signedInState = signedInState,
             messageBarState = messageBarState,
             onButtonClicked = {
-                loginViewModel.saveSignedInState(signedIn = true)
+                loginViewModel.updateSignedInState(signedIn = true)
             }
         )
     }
@@ -57,14 +58,17 @@ fun LoginScreen(
                     }
 
                     override fun handleFault(fault: BackendlessFault?) {
-                        Log.d("LoginScreen", "$fault")
+                        logout(
+                            onSuccess = { Log.d("Logout", "Success!") },
+                            onFailed = { Log.d("Logout", it) }
+                        )
                     }
                 },
                 true
             )
         },
         onDialogDismissed = {
-            loginViewModel.saveSignedInState(signedIn = false)
+            loginViewModel.updateSignedInState(signedIn = false)
             loginViewModel.updateMessageBarState(message = it)
         },
         launcher = { activityLauncher ->

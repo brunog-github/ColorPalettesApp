@@ -15,7 +15,7 @@ class LoginViewModel: ViewModel() {
     var messageBarState by mutableStateOf(MessageBarState())
         private set
 
-    fun saveSignedInState(signedIn: Boolean) {
+    fun updateSignedInState(signedIn: Boolean) {
         signedInState = signedIn
     }
 
