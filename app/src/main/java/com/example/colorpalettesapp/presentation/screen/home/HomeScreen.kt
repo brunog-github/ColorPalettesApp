@@ -4,15 +4,19 @@ import android.annotation.SuppressLint
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.example.colorpalettesapp.domain.model.ColorPalette
+import com.example.colorpalettesapp.presentation.components.DefaultContent
 import com.example.colorpalettesapp.presentation.components.NavigationDrawer
-import com.example.colorpalettesapp.presentation.components.PaletteHolder
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun HomeScreen(navController: NavHostController) {
+fun HomeScreen(
+    navController: NavHostController,
+    homeViewModel: HomeViewModel = hiltViewModel()
+) {
 
+    val colorPalette = homeViewModel.colorPalettes
     val scaffoldState = rememberScaffoldState()
 
     Scaffold(
@@ -26,7 +30,10 @@ fun HomeScreen(navController: NavHostController) {
             )
         },
         content = {
-
+            DefaultContent(
+                navController = navController,
+                colorPalette = colorPalette
+            )
         }
     )
 }

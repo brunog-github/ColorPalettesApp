@@ -19,6 +19,7 @@ class BackendlessDataSourceImpl @Inject constructor(
             .create()
             .setProperties("Count(likes) as totalLikes", "colors", "approved", "objectId")
             .setWhereClause("approved = true")
+            .setGroupBy("objectId")
 
         return suspendCoroutine { continuation ->
             backendless.of(ColorPalette::class.java)

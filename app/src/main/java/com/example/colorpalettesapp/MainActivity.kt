@@ -8,7 +8,9 @@ import com.backendless.Backendless
 import com.example.colorpalettesapp.navigation.SetupNavGraph
 import com.example.colorpalettesapp.ui.theme.ColorPalettesAppTheme
 import com.example.colorpalettesapp.util.Constants
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
