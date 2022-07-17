@@ -26,15 +26,7 @@ fun HomeScreen(navController: NavHostController) {
             )
         },
         content = {
-            PaletteHolder(
-                colorPalette = ColorPalette(
-                    objectId = null,
-                    approved = true,
-                    colors = "#F1DDBF,#0093AB,#00AFC1",
-                    totalLikes = 120
-                ),
-                onClick = {}
-            )
+
         }
     )
 }
