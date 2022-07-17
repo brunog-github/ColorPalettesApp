@@ -99,15 +99,41 @@ class BackendlessDataSourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun observeApprovedPalettes(ownerId: String): Flow<ColorPalette> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun observeApproval(): Flow<ColorPalette> {
+        return callbackFlow {
+            val event = backendless.of(ColorPalette::class.java).rt()
+            val callback = object : AsyncCallback<ColorPalette> {
+                override fun handleResponse(response: ColorPalette) {
+                    trySendBlocking(response)
+                }
 
-    override suspend fun observeNotApprovedPalettes(ownerId: String): Flow<ColorPalette> {
-        TODO("Not yet implemented")
+                override fun handleFault(fault: BackendlessFault?) {
+                    fault?.message?.let { cancel(message = it) }
+                }
+            }
+            event.addUpdateListener("approved = false or approved = true", callback)
+            awaitClose {
+                event.removeUpdateListeners()
+            }
+        }
     }
 
     override suspend fun observeDeletePalettes(): Flow<ColorPalette> {
-        TODO("Not yet implemented")
+        return callbackFlow {
+            val event = backendless.of(ColorPalette::class.java).rt()
+            val callback = object : AsyncCallback<ColorPalette> {
+                override fun handleResponse(response: ColorPalette) {
+                    trySendBlocking(response)
+                }
+
+                override fun handleFault(fault: BackendlessFault?) {
+                    fault?.message?.let { cancel(message = it) }
+                }
+            }
+            event.addDeleteListener(callback)
+            awaitClose {
+                event.removeDeleteListeners()
+            }
+        }
     }
 }

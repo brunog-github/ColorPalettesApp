@@ -1,6 +1,5 @@
 package com.example.colorpalettesapp.presentation.screen.home
 
-import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,7 +8,6 @@ import com.example.colorpalettesapp.domain.model.ColorPalette
 import com.example.colorpalettesapp.domain.repository.Repository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,6 +23,8 @@ class HomeViewModel @Inject constructor(
         getColorPalettes()
         observeAddRelation()
         observeDeleteRelation()
+        observeApproval()
+        observeDeletePalettes()
     }
 
     private fun getColorPalettes() {
@@ -35,16 +35,16 @@ class HomeViewModel @Inject constructor(
 
     private fun observeAddRelation() {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.observeAddRelation().collect { addRelation ->
-                updateNumberOfLikes(relationStatus = addRelation)
+            repository.observeAddRelation().collect { status ->
+                updateNumberOfLikes(relationStatus = status)
             }
         }
     }
 
     private fun observeDeleteRelation() {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.observeDeleteRelation().collect { deleteRelation ->
-                updateNumberOfLikes(relationStatus = deleteRelation)
+            repository.observeDeleteRelation().collect { status ->
+                updateNumberOfLikes(relationStatus = status)
             }
         }
     }
@@ -66,4 +66,23 @@ class HomeViewModel @Inject constructor(
         )
     }
 
+    private fun observeApproval() {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.observeApproval().collect { palette ->
+                if (palette.approved) {
+                    colorPalettes.add(palette)
+                } else {
+                    colorPalettes.removeAll { it.objectId == palette.objectId }
+                }
+            }
+        }
+    }
+
+    private fun observeDeletePalettes() {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.observeDeletePalettes().collect { palette ->
+                colorPalettes.removeAll { it.objectId == palette.objectId }
+            }
+        }
+    }
 }

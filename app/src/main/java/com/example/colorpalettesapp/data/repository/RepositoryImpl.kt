@@ -5,7 +5,6 @@ import com.example.colorpalettesapp.domain.model.ColorPalette
 import com.example.colorpalettesapp.domain.repository.BackendlessDataSource
 import com.example.colorpalettesapp.domain.repository.Repository
 import kotlinx.coroutines.flow.Flow
-import java.util.*
 import javax.inject.Inject
 
 class RepositoryImpl @Inject constructor(
@@ -28,12 +27,8 @@ class RepositoryImpl @Inject constructor(
         return backendless.observeDeleteRelation()
     }
 
-    override suspend fun observeApprovedPalettes(ownerId: String): Flow<ColorPalette> {
-        return backendless.observeApprovedPalettes(ownerId)
-    }
-
-    override suspend fun observeNotApprovedPalettes(ownerId: String): Flow<ColorPalette> {
-        return backendless.observeNotApprovedPalettes(ownerId)
+    override suspend fun observeApproval(): Flow<ColorPalette> {
+        return backendless.observeApproval()
     }
 
     override suspend fun observeDeletePalettes(): Flow<ColorPalette> {

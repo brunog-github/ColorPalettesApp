@@ -14,9 +14,7 @@ interface Repository {
 
     suspend fun observeDeleteRelation(): Flow<RelationStatus?>
 
-    suspend fun observeApprovedPalettes(ownerId: String): Flow<ColorPalette>
-
-    suspend fun observeNotApprovedPalettes(ownerId: String): Flow<ColorPalette>
+    suspend fun observeApproval(): Flow<ColorPalette>
 
     suspend fun observeDeletePalettes(): Flow<ColorPalette>
 }
