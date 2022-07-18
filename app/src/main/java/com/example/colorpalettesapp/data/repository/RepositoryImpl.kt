@@ -49,4 +49,12 @@ class RepositoryImpl @Inject constructor(
     override suspend fun removeColorPalette(paletteObjectId: String, userObjectId: String): Int {
         return backendless.removeColorPalette(paletteObjectId, userObjectId)
     }
+
+    override suspend fun addLike(paletteObjectId: String, userObjectId: String): Int? {
+        return backendless.addLike(paletteObjectId, userObjectId)
+    }
+
+    override suspend fun removeLike(paletteObjectId: String, userObjectId: String): Int? {
+        return backendless.removeLike(paletteObjectId, userObjectId)
+    }
 }

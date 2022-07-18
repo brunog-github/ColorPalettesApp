@@ -1,5 +1,8 @@
 package com.example.colorpalettesapp.presentation.screen.details
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -46,7 +49,7 @@ class DetailsViewModel @Inject constructor(
         }
     }
 
-    fun saveColorPalette() {
+    fun saveOrRemoveColorPalette() {
         val userObjectId = Backendless.UserService.CurrentUser().objectId
 
         viewModelScope.launch(Dispatchers.IO) {
@@ -76,10 +79,59 @@ class DetailsViewModel @Inject constructor(
             }
         }
     }
+
+    fun addOrRemoveLike() {
+        val userObjectId = Backendless.UserService.CurrentUser().objectId
+
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val result = repository.addLike(
+                    paletteObjectId = selectedPalette.objectId!!,
+                    userObjectId = userObjectId
+                )
+
+                if (result == 0) {
+                    repository.removeLike(selectedPalette.objectId!!, userObjectId)
+                    selectedPalette = selectedPalette.totalLikes?.minus(1).let {
+                        selectedPalette.copy(totalLikes = it)
+                    }
+                    _uiEvent.send(DetailsScreenUiEvent.RemoveLike)
+
+                } else if (result != null && result > 0) {
+                    selectedPalette = selectedPalette.totalLikes?.plus(1).let {
+                        selectedPalette.copy(totalLikes = it)
+                    }
+                    _uiEvent.send(DetailsScreenUiEvent.AddLike)
+                }
+            } catch (e: Exception) {
+                _uiEvent.send(
+                    DetailsScreenUiEvent.Error(
+                        text = parseErrorMessage(message = e.message.toString())
+                    )
+                )
+            }
+        }
+    }
+
+
+    fun copyToClipBoard(context: Context, color: String) {
+        val clipboardManager = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val clipData = ClipData.newPlainText("Color", color)
+        clipboardManager.setPrimaryClip(clipData)
+
+        viewModelScope.launch {
+            _uiEvent.send(
+                DetailsScreenUiEvent.CopyToClipboard(color = color)
+            )
+        }
+    }
 }
 
 sealed class DetailsScreenUiEvent(val message: String) {
+    object AddLike: DetailsScreenUiEvent(message = "Liked!")
+    object RemoveLike: DetailsScreenUiEvent(message = "Removed a like!")
     object SavePalette: DetailsScreenUiEvent(message = "Saved!")
     object RemoveSavedPalette: DetailsScreenUiEvent(message = "Removed from saved!")
     data class Error(val text: String): DetailsScreenUiEvent(message = text)
+    data class CopyToClipboard(val color: String): DetailsScreenUiEvent(message = "$color Copied!")
 }

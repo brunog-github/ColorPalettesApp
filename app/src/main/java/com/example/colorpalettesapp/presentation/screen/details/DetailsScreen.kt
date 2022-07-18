@@ -6,6 +6,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.colorpalettesapp.domain.model.ColorPalette
@@ -23,6 +24,7 @@ fun DetailsScreen(
     val selectedPalette = detailsViewModel.selectedPalette
 
     val scaffoldState = rememberScaffoldState()
+    val context = LocalContext.current
     
     LaunchedEffect(key1 = colorPalette) {
         detailsViewModel.updateSelectedPalette(colorPalette)
@@ -43,13 +45,18 @@ fun DetailsScreen(
             DetailsTopBar(
                 isSaved = isSaved,
                 onBackClicked = { navController.popBackStack() },
-                onSaveClicked = { detailsViewModel.saveColorPalette() }
+                onSaveClicked = { detailsViewModel.saveOrRemoveColorPalette() }
             )
         },
         content = {
             DetailsContent(
                 colorPalette = selectedPalette,
-                onColorClicked = {}
+                onColorClicked = {
+                    detailsViewModel.copyToClipBoard(
+                        context = context,
+                        color = it
+                    )
+                }
             )
         },
         floatingActionButton = {
@@ -64,11 +71,11 @@ fun DetailsScreen(
                 },
                 text = {
                     Text(
-                        text = "${colorPalette.totalLikes ?: "0"}",
+                        text = "${selectedPalette.totalLikes ?: "0"}",
                         color = Color.White
                     )
                 },
-                onClick = {}
+                onClick = { detailsViewModel.addOrRemoveLike() }
             )
         }
     )

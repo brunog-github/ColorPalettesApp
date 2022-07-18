@@ -23,4 +23,8 @@ interface BackendlessDataSource {
     suspend fun saveColorPalette(paletteObjectId: String, userObjectId: String): Int
 
     suspend fun removeColorPalette(paletteObjectId: String, userObjectId: String): Int
+
+    suspend fun addLike(paletteObjectId: String, userObjectId: String): Int?
+
+    suspend fun removeLike(paletteObjectId: String, userObjectId: String): Int?
 }
