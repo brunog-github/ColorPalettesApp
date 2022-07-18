@@ -17,4 +17,10 @@ interface Repository {
     suspend fun observeApproval(): Flow<ColorPalette>
 
     suspend fun observeDeletePalettes(): Flow<ColorPalette>
+
+    suspend fun checkSavedPalette(paletteObjectId: String, userObjectId: String): List<ColorPalette>
+
+    suspend fun saveColorPalette(paletteObjectId: String, userObjectId: String): Int
+
+    suspend fun removeColorPalette(paletteObjectId: String, userObjectId: String): Int
 }

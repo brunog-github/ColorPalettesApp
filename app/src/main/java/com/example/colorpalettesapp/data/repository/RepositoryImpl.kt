@@ -34,4 +34,19 @@ class RepositoryImpl @Inject constructor(
     override suspend fun observeDeletePalettes(): Flow<ColorPalette> {
         return backendless.observeDeletePalettes()
     }
+
+    override suspend fun checkSavedPalette(
+        paletteObjectId: String,
+        userObjectId: String
+    ): List<ColorPalette> {
+        return backendless.checkSavedPalette(paletteObjectId, userObjectId)
+    }
+
+    override suspend fun saveColorPalette(paletteObjectId: String, userObjectId: String): Int {
+        return backendless.saveColorPalette(paletteObjectId, userObjectId)
+    }
+
+    override suspend fun removeColorPalette(paletteObjectId: String, userObjectId: String): Int {
+        return backendless.removeColorPalette(paletteObjectId, userObjectId)
+    }
 }

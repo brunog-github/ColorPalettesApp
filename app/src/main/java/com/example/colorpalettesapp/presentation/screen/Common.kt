@@ -120,3 +120,11 @@ fun extractColors(colorPalette: ColorPalette?): List<String> {
 fun hexToColor(colorHex: String): Color {
     return Color(("FF" + colorHex.removePrefix("#")).toLong(16))
 }
+
+fun parseErrorMessage(message: String): String {
+    return if (message.contains("No address associated with hostname")) {
+        "No Internet Connection"
+    } else {
+        message
+    }
+}

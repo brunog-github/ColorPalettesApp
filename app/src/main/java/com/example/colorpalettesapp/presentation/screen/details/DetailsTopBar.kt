@@ -25,7 +25,7 @@ fun DetailsTopBar(
                 Icon(
                     imageVector = Icons.Filled.ArrowBack,
                     contentDescription = "Back arrow icon",
-                    tint = Color.White
+                    tint = MaterialTheme.colors.topAppBarContentColor
                 )
             }
         },
