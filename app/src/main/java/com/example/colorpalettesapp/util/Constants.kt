@@ -11,4 +11,6 @@ object Constants {
     const val CLIENT_SECRET = BuildConfig.CLIENT_SECRET
 
     const val REDIRECT_URI = BuildConfig.REDIRECT_URI
+
+    const val COLOR_PALETTE_KEY = "colorPalette"
 }

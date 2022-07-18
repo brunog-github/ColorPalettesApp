@@ -4,10 +4,12 @@ import android.annotation.SuppressLint
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.colorpalettesapp.presentation.components.DefaultContent
 import com.example.colorpalettesapp.presentation.components.NavigationDrawer
+import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -18,6 +20,7 @@ fun HomeScreen(
 
     val colorPalette = homeViewModel.colorPalettes
     val scaffoldState = rememberScaffoldState()
+    val scope = rememberCoroutineScope()
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -26,7 +29,14 @@ fun HomeScreen(
             NavigationDrawer(
                 navController = navController,
                 scaffoldState = scaffoldState,
-                logoutFailed = {}
+                logoutFailed = {
+                    scope.launch {
+                        scaffoldState.snackbarHostState.showSnackbar(
+                            message = "Something went wrong.",
+                            actionLabel = "Ok"
+                        )
+                    }
+                }
             )
         },
         content = {
