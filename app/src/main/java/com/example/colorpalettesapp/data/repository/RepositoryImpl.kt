@@ -57,4 +57,12 @@ class RepositoryImpl @Inject constructor(
     override suspend fun removeLike(paletteObjectId: String, userObjectId: String): Int? {
         return backendless.removeLike(paletteObjectId, userObjectId)
     }
+
+    override suspend fun getSavedPalettes(userObjectId: String): List<ColorPalette> {
+        return backendless.getSavedPalettes(userObjectId)
+    }
+
+    override suspend fun observeSavedPalettes(userObjectId: String): Flow<RelationStatus?> {
+        return backendless.observeSavedPalettes(userObjectId)
+    }
 }
