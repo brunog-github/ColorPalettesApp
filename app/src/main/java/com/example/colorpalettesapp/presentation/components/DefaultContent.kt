@@ -14,7 +14,8 @@ import com.example.colorpalettesapp.util.Constants.COLOR_PALETTE_KEY
 @Composable
 fun DefaultContent(
     navController: NavHostController,
-    colorPalette: List<ColorPalette>
+    colorPalette: List<ColorPalette>,
+    showFab: Boolean = true
 ) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -31,7 +32,7 @@ fun DefaultContent(
                         key = COLOR_PALETTE_KEY,
                         value = singleColorPalette
                     )
-                    navController.navigate(Screen.Details.route)
+                    navController.navigate(Screen.Details.passShowFab(showFab))
                 }
             )
         }

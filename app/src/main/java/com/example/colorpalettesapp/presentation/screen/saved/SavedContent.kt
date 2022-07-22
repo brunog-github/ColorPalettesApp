@@ -25,7 +25,11 @@ fun SavedContent(
             if (savedPalette.isEmpty()) {
                 NoSavedPalettes()
             } else {
-                DefaultContent(navController = navController, colorPalette = savedPalette)
+                DefaultContent(
+                    navController = navController,
+                    colorPalette = savedPalette,
+                    showFab = false
+                )
             }
         }
         is RequestState.Error -> {
