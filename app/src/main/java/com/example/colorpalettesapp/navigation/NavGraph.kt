@@ -11,6 +11,7 @@ import com.example.colorpalettesapp.presentation.screen.details.DetailsScreen
 import com.example.colorpalettesapp.presentation.screen.home.HomeScreen
 import com.example.colorpalettesapp.presentation.screen.login.LoginScreen
 import com.example.colorpalettesapp.presentation.screen.saved.SavedScreen
+import com.example.colorpalettesapp.presentation.screen.submitted.SubmittedScreen
 import com.example.colorpalettesapp.util.Constants.COLOR_PALETTE_KEY
 
 @Composable
@@ -42,7 +43,7 @@ fun SetupNavGraph(navController: NavHostController) {
 
         }
         composable(route = Screen.Saved.route) { SavedScreen(navController = navController) }
-        composable(route = Screen.Submitted.route) {}
+        composable(route = Screen.Submitted.route) { SubmittedScreen(navController = navController) }
         composable(route = Screen.Create.route) {}
     }
 }
