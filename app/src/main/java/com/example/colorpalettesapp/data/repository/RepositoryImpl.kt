@@ -65,4 +65,12 @@ class RepositoryImpl @Inject constructor(
     override suspend fun observeSavedPalettes(userObjectId: String): Flow<RelationStatus?> {
         return backendless.observeSavedPalettes(userObjectId)
     }
+
+    override suspend fun getSubmittedPalettes(userObjectId: String): List<ColorPalette> {
+        return backendless.getSubmittedPalettes(userObjectId)
+    }
+
+    override suspend fun observeSubmittedPalettes(userObjectId: String): Flow<ColorPalette> {
+        return backendless.observeSubmittedPalettes(userObjectId)
+    }
 }

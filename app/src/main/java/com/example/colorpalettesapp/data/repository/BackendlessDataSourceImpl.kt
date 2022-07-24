@@ -286,4 +286,43 @@ class BackendlessDataSourceImpl @Inject constructor(
             }
         }
     }
+
+    override suspend fun getSubmittedPalettes(userObjectId: String): List<ColorPalette> {
+        val query = DataQueryBuilder.create().setWhereClause("ownerId = '$userObjectId'")
+
+        return suspendCoroutine { continuation ->
+            backendless.of(ColorPalette::class.java).find(
+                query,
+                object : AsyncCallback<List<ColorPalette>> {
+                    override fun handleResponse(response: List<ColorPalette>) {
+                        continuation.resume(response)
+                    }
+
+                    override fun handleFault(fault: BackendlessFault?) {
+                        continuation.resumeWithException(Exception(fault?.message.toString()))
+                    }
+                }
+            )
+        }
+    }
+
+    override suspend fun observeSubmittedPalettes(userObjectId: String): Flow<ColorPalette> {
+        return callbackFlow {
+            val event = backendless.of(ColorPalette::class.java).rt()
+            val callback = object : AsyncCallback<ColorPalette> {
+                override fun handleResponse(response: ColorPalette) {
+                    trySendBlocking(response)
+                }
+
+                override fun handleFault(fault: BackendlessFault?) {
+                    fault?.message?.let { cancel(message = it) }
+                }
+            }
+            val whereClause = "ownerId = '$userObjectId' and approved = false"
+            event.addCreateListener(whereClause, callback)
+            awaitClose {
+                event.removeCreateListeners()
+            }
+        }
+    }
 }
