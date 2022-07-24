@@ -35,4 +35,6 @@ interface Repository {
     suspend fun getSubmittedPalettes(userObjectId: String): List<ColorPalette>
 
     suspend fun observeSubmittedPalettes(userObjectId: String): Flow<ColorPalette>
+
+    suspend fun submitColorPalette(colorPalette: ColorPalette): ColorPalette
 }

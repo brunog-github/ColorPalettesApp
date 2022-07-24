@@ -325,4 +325,21 @@ class BackendlessDataSourceImpl @Inject constructor(
             }
         }
     }
+
+    override suspend fun submitColorPalette(colorPalette: ColorPalette): ColorPalette {
+        return suspendCoroutine { continuation ->
+            backendless.of(ColorPalette::class.java).save(
+                colorPalette,
+                object : AsyncCallback<ColorPalette> {
+                    override fun handleResponse(response: ColorPalette) {
+                        continuation.resume(response)
+                    }
+
+                    override fun handleFault(fault: BackendlessFault?) {
+                        continuation.resumeWithException(Exception(fault?.message))
+                    }
+                }
+            )
+        }
+    }
 }
