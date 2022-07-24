@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.example.colorpalettesapp.navigation.Screen
 import com.example.colorpalettesapp.presentation.components.NavigationDrawer
 import kotlinx.coroutines.launch
 
@@ -28,7 +29,7 @@ fun SubmittedScreen(
             SubmittedTopBar(
                 submittedColors = submittedPalettes,
                 requestState = requestState,
-                onSubmitClicked = {},
+                onSubmitClicked = { navController.navigate(Screen.Create.route) },
                 onMenuClicked = { scope.launch { scaffoldState.drawerState.open()  } }
             )
         },
@@ -51,7 +52,7 @@ fun SubmittedScreen(
                 navController = navController,
                 submittedColors = submittedPalettes,
                 requestState = requestState,
-                onSubmitClicked = {}
+                onSubmitClicked = { navController.navigate(Screen.Create.route) }
             )
         }
     )
