@@ -2,7 +2,6 @@ package com.example.colorpalettesapp.presentation.screen.login
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.util.Log
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
@@ -14,7 +13,6 @@ import com.backendless.async.callback.AsyncCallback
 import com.backendless.exceptions.BackendlessFault
 import com.example.colorpalettesapp.navigation.Screen
 import com.example.colorpalettesapp.presentation.screen.StartActivityForResult
-import com.example.colorpalettesapp.presentation.screen.logout
 import com.example.colorpalettesapp.presentation.screen.signIn
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -60,10 +58,8 @@ fun LoginScreen(
                     }
 
                     override fun handleFault(fault: BackendlessFault?) {
-                        logout(
-                            onSuccess = { },
-                            onFailed = { }
-                        )
+                        loginViewModel.updateSignedInState(signedIn = false)
+                        fault?.message?.let { loginViewModel.updateMessageBarState(message = it) }
                     }
                 },
                 true

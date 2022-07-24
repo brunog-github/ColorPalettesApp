@@ -3,13 +3,16 @@ package com.example.colorpalettesapp.presentation.screen.login
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.example.colorpalettesapp.domain.model.MessageBarState
 import java.lang.Exception
 
-class LoginViewModel: ViewModel() {
+class LoginViewModel(
+    savedStateHandle: SavedStateHandle
+): ViewModel() {
 
-    var signedInState by mutableStateOf(false)
+    var signedInState by mutableStateOf(savedStateHandle.get<Boolean>("signedInState") ?: true)
         private set
 
     var messageBarState by mutableStateOf(MessageBarState())

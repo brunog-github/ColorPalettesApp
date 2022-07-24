@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.navigation.compose.rememberNavController
 import com.backendless.Backendless
 import com.example.colorpalettesapp.navigation.SetupNavGraph
+import com.example.colorpalettesapp.presentation.screen.logout
 import com.example.colorpalettesapp.ui.theme.ColorPalettesAppTheme
 import com.example.colorpalettesapp.util.Constants
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,5 +23,10 @@ class MainActivity : ComponentActivity() {
                 SetupNavGraph(navController = navController)
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        logout(onSuccess = {}, onFailed = {})
     }
 }
