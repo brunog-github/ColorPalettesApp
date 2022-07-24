@@ -1,11 +1,11 @@
 package com.example.colorpalettesapp.presentation.screen.create
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
-import com.example.colorpalettesapp.presentation.components.ColorPicker
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -17,10 +17,12 @@ fun CreateScreen(
     
     Scaffold(
         scaffoldState = scaffoldState,
-        topBar = {},
+        topBar = {
+            CreateTopBar { navController.popBackStack() }
+        },
         drawerContent = {},
         content = {
-            ColorPicker(selectedColor = {})
+            CreateContent(onSubmittedClicked = { Log.d("CreateScreen", it) })
         }
     )
 }

@@ -118,7 +118,11 @@ fun extractColors(colorPalette: ColorPalette?): List<String> {
 }
 
 fun hexToColor(colorHex: String): Color {
-    return Color(("FF" + colorHex.removePrefix("#")).toLong(16))
+    return try {
+        Color(("FF" + colorHex.removePrefix("#")).toLong(16))
+    } catch (e: Exception) {
+        Color("FFFFFFFF".toLong(16))
+    }
 }
 
 fun parseErrorMessage(message: String): String {
